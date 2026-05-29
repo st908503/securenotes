@@ -9,6 +9,7 @@ interface CreateNoteInput {
 
 interface GetNotesInput {
   userId: string;
+  search?: string;
 }
 
 export const createNote = async ({
@@ -27,10 +28,26 @@ export const createNote = async ({
 
 export const getUserNotes = async ({
   userId,
+  search,
 }: GetNotesInput) => {
-  const notes = await Note.find({
+  const query: any = {
     user: userId,
-  }).sort({
+  };
+
+  /*
+  |--------------------------------------------------------------------------
+  | Search Filter
+  |--------------------------------------------------------------------------
+  */
+
+  if (search) {
+    query.title = {
+      $regex: search,
+      $options: "i",
+    };
+  }
+
+  const notes = await Note.find(query).sort({
     createdAt: -1,
   });
 

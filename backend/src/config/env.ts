@@ -2,11 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const requiredEnvVariables = [
-  "PORT",
-  "MONGO_URI",
-  "JWT_SECRET",
-];
+const requiredEnvVariables = ["PORT", "MONGO_URI", "JWT_SECRET"];
 
 requiredEnvVariables.forEach((key) => {
   if (!process.env[key]) {

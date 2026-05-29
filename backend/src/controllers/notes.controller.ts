@@ -29,8 +29,11 @@ export const addNote = asyncHandler(async (req: Request, res: Response) => {
 export const fetchNotes = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.userId as string;
 
+  const search = req.query.search as string;
+
   const notes = await getUserNotes({
     userId,
+    search,
   });
 
   res.status(200).json({
