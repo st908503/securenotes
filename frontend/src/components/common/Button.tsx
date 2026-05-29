@@ -17,7 +17,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        "w-full rounded-lg bg-primary px-4 py-3 text-white font-medium shadow-md hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70",
+        "w-full rounded-md border border-blue-500 bg-[#3b82f6] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#2563eb] disabled:cursor-not-allowed disabled:opacity-70",
         className
       )}
       disabled={loading || disabled}

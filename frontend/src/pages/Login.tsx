@@ -56,18 +56,28 @@ const Login = () => {
   }, [token, navigate]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-slate-800">
-            Secure Notes
-          </h1>
+    <div className="flex min-h-screen items-center justify-center bg-[#ececf1] px-4">
+      <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+        {/* Title */}
+        <h1 className="mb-8 text-center text-4xl font-bold text-slate-800">
+          Secure Notes
+        </h1>
 
-          <p className="mt-2 text-slate-500">
-            Login to your account
-          </p>
+        {/* Tabs */}
+        <div className="mb-8 flex overflow-hidden rounded-lg border border-slate-200">
+          <button className="flex-1 bg-[#3b82f6] py-3 text-sm font-medium text-white">
+            Login
+          </button>
+
+          <Link
+            to="/register"
+            className="flex-1 bg-white py-3 text-center text-sm font-medium text-slate-700 transition hover:bg-[#2563eb]"
+          >
+            Register
+          </Link>
         </div>
 
+        {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-5"
@@ -75,7 +85,6 @@ const Login = () => {
           <Input
             label="Email"
             type="email"
-            placeholder="Enter your email"
             error={errors.email?.message}
             {...register("email", {
               required: "Email is required",
@@ -85,7 +94,6 @@ const Login = () => {
           <Input
             label="Password"
             type="password"
-            placeholder="Enter your password"
             error={errors.password?.message}
             {...register("password", {
               required: "Password is required",
@@ -95,19 +103,15 @@ const Login = () => {
           <Button
             type="submit"
             loading={loading}
+            className="mt-2"
           >
             Login
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-600">
-          Don&apos;t have an account?{" "}
-          <Link
-            to="/register"
-            className="font-medium text-primary hover:underline"
-          >
-            Register
-          </Link>
+        {/* Footer */}
+        <p className="mt-8 text-center text-sm text-slate-600">
+          Forgot password?
         </p>
       </div>
     </div>

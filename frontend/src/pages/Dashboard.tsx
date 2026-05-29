@@ -2,7 +2,11 @@ import {
   useEffect,
   useState,
 } from "react";
+
+import { Search } from "lucide-react";
+
 import { useDebounce } from "use-debounce";
+
 import {
   useDispatch,
   useSelector,
@@ -22,19 +26,31 @@ import type {
 } from "../app/store";
 
 import NoteCard from "../components/notes/NoteCard";
-import NoteForm from "../components/notes/NoteForm";
+
 import Loader from "../components/common/Loader";
 
 import { logout } from "../features/auth/authSlice";
+
+import Navbar from "../components/layout/Navbar";
 
 const Dashboard = () => {
   const dispatch =
     useDispatch<AppDispatch>();
 
-const [search, setSearch] = useState("");
+  const [search, setSearch] =
+    useState("");
 
-const [debouncedSearch] =
-  useDebounce(search, 500);
+  const [showForm, setShowForm] =
+    useState(false);
+
+  const [title, setTitle] =
+    useState("");
+
+  const [content, setContent] =
+    useState("");
+
+  const [debouncedSearch] =
+    useDebounce(search, 500);
 
   const { notes, loading } =
     useSelector(
@@ -42,14 +58,21 @@ const [debouncedSearch] =
         state.notes
     );
 
-useEffect(() => {
-  dispatch(fetchNotes(debouncedSearch));
-}, [dispatch, debouncedSearch]);
+  useEffect(() => {
+    dispatch(
+      fetchNotes(debouncedSearch)
+    );
+  }, [dispatch, debouncedSearch]);
 
-  const handleCreateNote = async (
-    title: string,
-    content: string
-  ) => {
+  const handleCreateNote = async () => {
+    if (!title || !content) {
+      toast.error(
+        "Please fill all fields"
+      );
+
+      return;
+    }
+
     const resultAction =
       await dispatch(
         createNote({
@@ -66,6 +89,11 @@ useEffect(() => {
       toast.success(
         "Note added successfully"
       );
+
+      setTitle("");
+      setContent("");
+
+      setShowForm(false);
     }
   };
 
@@ -93,63 +121,110 @@ useEffect(() => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <h1 className="text-2xl font-bold text-slate-800">
-            Secure Notes
-          </h1>
+    <div className="min-h-screen bg-[#ececf1] px-4 py-8">
+      <div className="mx-auto max-w-5xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        {/* Navbar */}
+        <Navbar
+          onLogout={handleLogout}
+        />
 
-          <button
-            onClick={handleLogout}
-            className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
+        {/* Content */}
+        <div className="p-6">
+          {/* Actions */}
+          <div className="mb-6 flex gap-4">
+            <button
+              onClick={() =>
+                setShowForm(!showForm)
+              }
+              className="rounded-lg border border-slate-200 bg-white px-6 py-3 text-lg font-medium shadow-sm hover:bg-slate-50"
+            >
+              Add Note
+            </button>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
-        <div className="mb-8">
-          <NoteForm
-            onSubmit={handleCreateNote}
-          />
-        </div>
-
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder="Search notes..."
-            value={search}
-            onChange={(e) =>
-              setSearch(e.target.value)
-            }
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-200"
-          />
-        </div>
-
-        {loading ? (
-          <Loader />
-        ) : notes.length === 0 ? (
-          <div className="rounded-xl bg-white p-10 text-center shadow-md">
-            <p className="text-slate-500">
-              No notes found
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {notes.map((note) => (
-              <NoteCard
-                key={note._id}
-                note={note}
-                onDelete={
-                  handleDeleteNote
-                }
+            <div className="relative flex-1">
+              <Search
+                size={20}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               />
-            ))}
+
+              <input
+                type="text"
+                placeholder="Search"
+                value={search}
+                onChange={(e) =>
+                  setSearch(
+                    e.target.value
+                  )
+                }
+                className="w-full rounded-lg border border-slate-200 bg-[#f8f8f8] py-3 pl-12 pr-4 text-lg outline-none focus:border-[#3b82f6]"
+              />
+            </div>
           </div>
-        )}
-      </main>
+
+          {/* Add Form */}
+          {showForm && (
+            <div className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Note title"
+                  value={title}
+                  onChange={(e) =>
+                    setTitle(
+                      e.target.value
+                    )
+                  }
+                  className="w-full rounded-lg border border-slate-200 px-4 py-3 outline-none focus:border-[#3b82f6]"
+                />
+
+                <textarea
+                  rows={5}
+                  placeholder="Write your secure note..."
+                  value={content}
+                  onChange={(e) =>
+                    setContent(
+                      e.target.value
+                    )
+                  }
+                  className="w-full rounded-lg border border-slate-200 px-4 py-3 outline-none focus:border-[#3b82f6]"
+                />
+
+                <button
+                  onClick={
+                    handleCreateNote
+                  }
+                  className="rounded-lg bg-[#3b82f6] px-6 py-3 font-medium text-white hover:bg-[#2563eb]"
+                >
+                  Save Note
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Notes */}
+          {loading ? (
+            <Loader />
+          ) : notes.length === 0 ? (
+            <div className="rounded-xl border border-slate-200 bg-white p-10 text-center">
+              <p className="text-slate-500">
+                No notes found
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {notes.map((note) => (
+                <NoteCard
+                  key={note._id}
+                  note={note}
+                  onDelete={
+                    handleDeleteNote
+                  }
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

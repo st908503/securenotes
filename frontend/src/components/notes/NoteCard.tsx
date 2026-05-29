@@ -1,6 +1,7 @@
 import { Trash2 } from "lucide-react";
 
 import type { Note } from "../../types";
+
 import { decryptNote } from "../../utils/encryption";
 
 interface NoteCardProps {
@@ -12,36 +13,37 @@ const NoteCard = ({
   note,
   onDelete,
 }: NoteCardProps) => {
-  const decryptedContent = decryptNote(
-    note.content
-  );
+  const decryptedContent =
+    decryptNote(note.content);
 
   return (
-    <div className="rounded-xl bg-white p-5 shadow-md transition hover:shadow-lg">
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-lg font-semibold text-slate-800">
-            {note.title}
-          </h3>
+    <div className="flex items-start justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
+      {/* Left Content */}
+      <div className="flex-1">
+        <h2 className="mb-2 text-2xl font-semibold text-slate-800">
+          {note.title}
+        </h2>
 
-          <p className="mt-1 text-sm text-slate-500">
-            {new Date(
-              note.createdAt
-            ).toLocaleString()}
-          </p>
-        </div>
+        <p className="line-clamp-2 whitespace-pre-wrap text-lg text-slate-500">
+          {decryptedContent}
+        </p>
 
-        <button
-          onClick={() => onDelete(note._id)}
-          className="rounded-md p-2 text-red-500 transition hover:bg-red-50"
-        >
-          <Trash2 size={18} />
-        </button>
+        <p className="mt-3 text-sm text-slate-400">
+          {new Date(
+            note.createdAt
+          ).toLocaleString()}
+        </p>
       </div>
 
-      <p className="whitespace-pre-wrap text-slate-700">
-        {decryptedContent}
-      </p>
+      {/* Delete Button */}
+      <button
+        onClick={() =>
+          onDelete(note._id)
+        }
+        className="ml-6 mt-1 text-slate-400 transition hover:text-red-500"
+      >
+        <Trash2 size={26} />
+      </button>
     </div>
   );
 };
