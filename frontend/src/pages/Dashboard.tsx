@@ -29,6 +29,8 @@ import NoteCard from "../components/notes/NoteCard";
 
 import Loader from "../components/common/Loader";
 
+import ConfirmModal from "../components/common/ConfirmModal";
+
 import { logout } from "../features/auth/authSlice";
 
 import Navbar from "../components/layout/Navbar";
@@ -41,6 +43,10 @@ const Dashboard = () => {
     useState("");
 
   const [showForm, setShowForm] =
+    useState(false);
+
+  const [showLogoutModal,
+    setShowLogoutModal] =
     useState(false);
 
   const [title, setTitle] =
@@ -114,10 +120,12 @@ const Dashboard = () => {
     }
   };
 
-  const handleLogout = () => {
+  const confirmLogout = () => {
     dispatch(logout());
 
     toast.success("Logged out");
+
+    setShowLogoutModal(false);
   };
 
   return (
@@ -125,7 +133,9 @@ const Dashboard = () => {
       <div className="mx-auto max-w-5xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         {/* Navbar */}
         <Navbar
-          onLogout={handleLogout}
+          onLogout={() =>
+            setShowLogoutModal(true)
+          }
         />
 
         {/* Content */}
@@ -225,6 +235,19 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Logout Modal */}
+      <ConfirmModal
+        isOpen={showLogoutModal}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        confirmText="Yes"
+        cancelText="No"
+        onConfirm={confirmLogout}
+        onCancel={() =>
+          setShowLogoutModal(false)
+        }
+      />
     </div>
   );
 };
