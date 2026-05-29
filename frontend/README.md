@@ -1,73 +1,212 @@
-# React + TypeScript + Vite
+# Secure Notes Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern frontend application for Secure Notes built with React, TypeScript, Redux Toolkit, TailwindCSS, and Vite.
 
-Currently, two official plugins are available:
+This application allows users to securely authenticate and manage encrypted personal notes.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* JWT authentication flow
+* Responsive UI
+* Redux Toolkit state management
+* AES client-side note encryption
+* Create notes
+* Search notes
+* Delete notes
+* Protected routes
+* Debounced search
+* Reusable component architecture
+* Axios API integration
+* Toast notifications
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* React
+* TypeScript
+* Vite
+* Redux Toolkit
+* TailwindCSS
+* React Router DOM
+* Axios
+* React Hook Form
+* CryptoJS
+* React Hot Toast
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Folder Structure
+
+```bash
+frontend/
+│
+├── src/
+│   ├── app/
+│   ├── components/
+│   ├── features/
+│   ├── hooks/
+│   ├── pages/
+│   ├── routes/
+│   ├── types/
+│   ├── utils/
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── public/
+├── .env.example
+├── package.json
+├── vite.config.ts
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Environment Variables
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Create a `.env` file in the frontend root directory.
+
+```env
+VITE_API_BASE_URL=http://localhost:8000/api
+
+VITE_AES_SECRET_KEY=my-super-secret-key
 ```
+
+---
+
+## Installation
+
+### Clone Repository
+
+```bash
+git clone <repository-url>
+```
+
+### Navigate to Frontend
+
+```bash
+cd frontend
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+## Run Development Server
+
+```bash
+npm run dev
+```
+
+Frontend will run on:
+
+```bash
+http://localhost:5173
+```
+
+---
+
+## Build Project
+
+```bash
+npm run build
+```
+
+---
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+---
+
+# Application Pages
+
+---
+
+## Authentication
+
+### Login Page
+
+* User login
+* Form validation
+* JWT token handling
+
+### Register Page
+
+* User registration
+* Password validation
+* Secure authentication flow
+
+---
+
+## Dashboard
+
+### Features
+
+* Create encrypted notes
+* Search notes
+* Delete notes
+* Responsive note cards
+* Protected dashboard route
+
+---
+
+# Encryption
+
+Notes are encrypted on the client side using AES encryption before being sent to the backend.
+
+Encryption is implemented using:
+
+```bash
+crypto-js
+```
+
+---
+
+# State Management
+
+Redux Toolkit is used for:
+
+* Authentication state
+* Notes state
+* Async API handling
+* Loading and error management
+
+---
+
+# UI Design
+
+The UI is built using:
+
+* TailwindCSS
+* Responsive layout
+* Reusable components
+* Modern minimal design system
+
+---
+
+# Future Improvements
+
+* Dark mode
+* Edit notes
+* Rich text editor
+* Pagination
+* Infinite scroll
+* PWA support
+* Unit testing
+* Docker deployment
+
+---
+
+# Author
+
+Developed as a Full Stack React Developer Assessment Project.

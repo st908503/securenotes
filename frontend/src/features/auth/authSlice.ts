@@ -1,24 +1,8 @@
-import {
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import {
-  loginUser,
-  registerUser,
-} from "./authService";
+import { loginUser, registerUser } from "./authService";
 
-import type {
-  AuthState,
-  LoginPayload,
-  RegisterPayload,
-} from "./types";
-
-/*
-|--------------------------------------------------------------------------
-| Initial State
-|--------------------------------------------------------------------------
-*/
+import type { AuthState, LoginPayload, RegisterPayload } from "./types";
 
 const initialState: AuthState = {
   user: null,
@@ -27,73 +11,39 @@ const initialState: AuthState = {
   error: null,
 };
 
-/*
-|--------------------------------------------------------------------------
-| Register Thunk
-|--------------------------------------------------------------------------
-*/
-
 export const register = createAsyncThunk(
   "auth/register",
-  async (
-    payload: RegisterPayload,
-    thunkAPI
-  ) => {
+  async (payload: RegisterPayload, thunkAPI) => {
     try {
-      const response =
-        await registerUser(payload);
+      const response = await registerUser(payload);
 
-      localStorage.setItem(
-        "token",
-        response.data.token
-      );
+      localStorage.setItem("token", response.data.token);
 
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message ||
-          "Registration failed"
+        error.response?.data?.message || "Registration failed",
       );
     }
-  }
+  },
 );
-
-/*
-|--------------------------------------------------------------------------
-| Login Thunk
-|--------------------------------------------------------------------------
-*/
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (
-    payload: LoginPayload,
-    thunkAPI
-  ) => {
+  async (payload: LoginPayload, thunkAPI) => {
     try {
-      const response =
-        await loginUser(payload);
+      const response = await loginUser(payload);
 
-      localStorage.setItem(
-        "token",
-        response.data.token
-      );
+      localStorage.setItem("token", response.data.token);
 
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message ||
-          "Login failed"
+        error.response?.data?.message || "Login failed",
       );
     }
-  }
+  },
 );
-
-/*
-|--------------------------------------------------------------------------
-| Slice
-|--------------------------------------------------------------------------
-*/
 
 const authSlice = createSlice({
   name: "auth",
@@ -109,69 +59,43 @@ const authSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    /*
-    |--------------------------------------------------------------------------
-    | Register
-    |--------------------------------------------------------------------------
-    */
-
     builder.addCase(register.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
 
-    builder.addCase(
-      register.fulfilled,
-      (state, action) => {
-        state.loading = false;
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.loading = false;
 
-        state.user = action.payload.user;
+      state.user = action.payload.user;
 
-        state.token = action.payload.token;
-      }
-    );
+      state.token = action.payload.token;
+    });
 
-    builder.addCase(
-      register.rejected,
-      (state, action) => {
-        state.loading = false;
+    builder.addCase(register.rejected, (state, action) => {
+      state.loading = false;
 
-        state.error =
-          action.payload as string;
-      }
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Login
-    |--------------------------------------------------------------------------
-    */
+      state.error = action.payload as string;
+    });
 
     builder.addCase(login.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
 
-    builder.addCase(
-      login.fulfilled,
-      (state, action) => {
-        state.loading = false;
+    builder.addCase(login.fulfilled, (state, action) => {
+      state.loading = false;
 
-        state.user = action.payload.user;
+      state.user = action.payload.user;
 
-        state.token = action.payload.token;
-      }
-    );
+      state.token = action.payload.token;
+    });
 
-    builder.addCase(
-      login.rejected,
-      (state, action) => {
-        state.loading = false;
+    builder.addCase(login.rejected, (state, action) => {
+      state.loading = false;
 
-        state.error =
-          action.payload as string;
-      }
-    );
+      state.error = action.payload as string;
+    });
   },
 });
 

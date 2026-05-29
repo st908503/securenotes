@@ -72,7 +72,7 @@ const Register = () => {
         <div className="mb-8 flex overflow-hidden rounded-lg border border-slate-200">
           <Link
             to="/login"
-            className="flex-1 bg-white py-3 text-center text-sm font-medium text-slate-700 transition hover:bg-[#2563eb]"
+            className="flex-1 bg-white py-3 text-center text-sm font-medium text-slate-700 transition hover:bg-[#2563eb] hover:text-white"
           >
             Login
           </Link>
@@ -128,10 +128,7 @@ const Register = () => {
           </Button>
         </form>
 
-        {/* Footer */}
-        <p className="mt-8 text-center text-sm text-slate-600">
-          Secure encrypted notes application
-        </p>
+       
       </div>
     </div>
   );

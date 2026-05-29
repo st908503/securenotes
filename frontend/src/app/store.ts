@@ -10,11 +10,6 @@ export const store = configureStore({
   },
 });
 
-/*
-|--------------------------------------------------------------------------
-| Types
-|--------------------------------------------------------------------------
-*/
 
 export type RootState = ReturnType<
   typeof store.getState

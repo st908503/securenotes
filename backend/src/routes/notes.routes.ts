@@ -12,43 +12,20 @@ import { validateRequest } from "../middlewares/validate.middleware";
 
 const router = express.Router();
 
-/*
-|--------------------------------------------------------------------------
-| Get All Notes
-|--------------------------------------------------------------------------
-*/
-
 router.get("/", protect, fetchNotes);
-
-/*
-|--------------------------------------------------------------------------
-| Create Note
-|--------------------------------------------------------------------------
-*/
 
 router.post(
   "/",
   protect,
   [
-    body("title")
-      .trim()
-      .notEmpty()
-      .withMessage("Title is required"),
+    body("title").trim().notEmpty().withMessage("Title is required"),
 
-    body("content")
-      .notEmpty()
-      .withMessage("Content is required"),
+    body("content").notEmpty().withMessage("Content is required"),
 
     validateRequest,
   ],
-  addNote
+  addNote,
 );
-
-/*
-|--------------------------------------------------------------------------
-| Delete Note
-|--------------------------------------------------------------------------
-*/
 
 router.delete("/:id", protect, removeNote);
 

@@ -71,7 +71,7 @@ const Login = () => {
 
           <Link
             to="/register"
-            className="flex-1 bg-white py-3 text-center text-sm font-medium text-slate-700 transition hover:bg-[#2563eb]"
+            className="flex-1 bg-white py-3 text-center text-sm font-medium text-slate-700 transition hover:bg-[#2563eb] hover:text-white"
           >
             Register
           </Link>

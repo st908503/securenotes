@@ -6,12 +6,6 @@ import type {
   RegisterPayload,
 } from "./types";
 
-/*
-|--------------------------------------------------------------------------
-| Register User
-|--------------------------------------------------------------------------
-*/
-
 export const registerUser = async (
   payload: RegisterPayload
 ): Promise<AuthResponse> => {
@@ -23,11 +17,6 @@ export const registerUser = async (
   return response.data;
 };
 
-/*
-|--------------------------------------------------------------------------
-| Login User
-|--------------------------------------------------------------------------
-*/
 
 export const loginUser = async (
   payload: LoginPayload
