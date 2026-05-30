@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env
-    .VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,17 +8,13 @@ export const api = axios.create({
   withCredentials: true,
 
   headers: {
-    "Content-Type":
-      "application/json",
+    "Content-Type": "application/json",
   },
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token =
-      localStorage.getItem(
-        "accessToken"
-      );
+    const token = localStorage.getItem("accessToken");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -29,62 +23,43 @@ api.interceptors.request.use(
     return config;
   },
 
-  (error) =>
-    Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 api.interceptors.response.use(
   (response) => response,
 
   async (error) => {
-    const originalRequest =
-      error.config;
+    const originalRequest = error.config;
 
-    if (
-      error.response?.status ===
-        401 &&
-      !originalRequest._retry
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const response =
-          await axios.post(
-            `${API_BASE_URL}/auth/refresh-token`,
-            {},
-            {
-              withCredentials: true,
-            }
-          );
-
-      const newAccessToken =
-  response.data.data
-    .accessToken;
-
-        localStorage.setItem(
-          "accessToken",
-          newAccessToken
+        const response = await axios.post(
+          `${API_BASE_URL}/auth/refresh-token`,
+          {},
+          {
+            withCredentials: true,
+          },
         );
+
+        const newAccessToken = response.data.data.accessToken;
+
+        localStorage.setItem("accessToken", newAccessToken);
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-        return api(
-          originalRequest
-        );
+        return api(originalRequest);
       } catch (refreshError) {
-        localStorage.removeItem(
-          "accessToken"
-        );
+        localStorage.removeItem("accessToken");
 
-        window.location.href =
-          "/login";
+        window.location.href = "/login";
 
-        return Promise.reject(
-          refreshError
-        );
+        return Promise.reject(refreshError);
       }
     }
 
     return Promise.reject(error);
-  }
+  },
 );

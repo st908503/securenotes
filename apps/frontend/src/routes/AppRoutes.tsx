@@ -1,8 +1,4 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
@@ -12,14 +8,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 
-const ProtectedRoute = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const { token } = useSelector(
-    (state: RootState) => state.auth
-  );
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { token } = useSelector((state: RootState) => state.auth);
 
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -31,15 +21,9 @@ const ProtectedRoute = ({
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route
-        path="/login"
-        element={<Login />}
-      />
+      <Route path="/login" element={<Login />} />
 
-      <Route
-        path="/register"
-        element={<Register />}
-      />
+      <Route path="/register" element={<Register />} />
 
       <Route
         path="/"

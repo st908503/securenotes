@@ -1,14 +1,8 @@
 import { User } from "../models/user.model";
 
-import {
-  comparePassword,
-  hashPassword,
-} from "../utils/bcrypt";
+import { comparePassword, hashPassword } from "../utils/bcrypt";
 
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
 
 import { ApiError } from "../lib/ApiError";
 
@@ -31,20 +25,15 @@ export const registerUser = async ({
   email,
   password,
 }: RegisterInput) => {
-  const existingUser =
-    await User.findOne({
-      email,
-    });
+  const existingUser = await User.findOne({
+    email,
+  });
 
   if (existingUser) {
-    throw new ApiError(
-      409,
-      "User already exists"
-    );
+    throw new ApiError(409, "User already exists");
   }
 
-  const hashedPassword =
-    await hashPassword(password);
+  const hashedPassword = await hashPassword(password);
 
   const user = await User.create({
     name,
@@ -63,45 +52,28 @@ export const registerUser = async ({
   };
 };
 
-export const loginUser = async ({
-  email,
-  password,
-}: LoginInput) => {
+export const loginUser = async ({ email, password }: LoginInput) => {
   const user = await User.findOne({
     email,
   }).select("+password");
 
   if (!user) {
-    throw new ApiError(
-      401,
-      "Invalid credentials"
-    );
+    throw new ApiError(401, "Invalid credentials");
   }
 
-  const isPasswordMatched =
-    await comparePassword(
-      password,
-      user.password
-    );
+  const isPasswordMatched = await comparePassword(password, user.password);
 
   if (!isPasswordMatched) {
-    throw new ApiError(
-      401,
-      "Invalid credentials"
-    );
+    throw new ApiError(401, "Invalid credentials");
   }
 
-  const accessToken =
-    generateAccessToken({
-      userId:
-        user._id.toString(),
-    });
+  const accessToken = generateAccessToken({
+    userId: user._id.toString(),
+  });
 
-  const refreshToken =
-    generateRefreshToken({
-      userId:
-        user._id.toString(),
-    });
+  const refreshToken = generateRefreshToken({
+    userId: user._id.toString(),
+  });
 
   return {
     user: {

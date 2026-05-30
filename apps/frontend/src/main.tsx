@@ -13,9 +13,7 @@ import App from "./App";
 
 import { store } from "./app/store";
 
-ReactDOM.createRoot(
-  document.getElementById("root")!
-).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
@@ -24,5 +22,5 @@ ReactDOM.createRoot(
         <App />
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

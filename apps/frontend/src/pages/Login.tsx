@@ -58,12 +58,10 @@ const Login = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#ececf1] px-4">
       <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        {/* Title */}
         <h1 className="mb-8 text-center text-4xl font-bold text-slate-800">
           Secure Notes
         </h1>
 
-        {/* Tabs */}
         <div className="mb-8 flex overflow-hidden rounded-lg border border-slate-200">
           <button className="flex-1 bg-[#3b82f6] py-3 text-sm font-medium text-white">
             Login
@@ -77,7 +75,6 @@ const Login = () => {
           </Link>
         </div>
 
-        {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-5"
@@ -109,7 +106,6 @@ const Login = () => {
           </Button>
         </form>
 
-        {/* Footer */}
         <p className="mt-8 text-center text-sm text-slate-600">
           Forgot password?
         </p>

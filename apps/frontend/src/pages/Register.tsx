@@ -42,11 +42,11 @@ const Register = () => {
     if (
       registerUser.fulfilled.match(resultAction)
     ) {
-     toast.success(
-  "Registration successful. Please login."
-);
+      toast.success(
+        "Registration successful. Please login."
+      );
 
-navigate("/login");
+      navigate("/login");
     }
   };
 
@@ -58,19 +58,17 @@ navigate("/login");
 
   useEffect(() => {
     if (token) {
-  navigate("/login");
+      navigate("/login");
     }
   }, [token, navigate]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#ececf1] px-4">
       <div className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
-        {/* Title */}
         <h1 className="mb-8 text-center text-4xl font-bold text-slate-800">
           Secure Notes
         </h1>
 
-        {/* Tabs */}
         <div className="mb-8 flex overflow-hidden rounded-lg border border-slate-200">
           <Link
             to="/login"
@@ -129,8 +127,6 @@ navigate("/login");
             Register
           </Button>
         </form>
-
-       
       </div>
     </div>
   );

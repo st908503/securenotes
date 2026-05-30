@@ -9,12 +9,8 @@ interface NoteCardProps {
   onDelete: (id: string) => void;
 }
 
-const NoteCard = ({
-  note,
-  onDelete,
-}: NoteCardProps) => {
-  const decryptedContent =
-    decryptNote(note.content);
+const NoteCard = ({ note, onDelete }: NoteCardProps) => {
+  const decryptedContent = decryptNote(note.content);
 
   return (
     <div className="flex items-start justify-between rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-md">
@@ -29,17 +25,13 @@ const NoteCard = ({
         </p>
 
         <p className="mt-3 text-sm text-slate-400">
-          {new Date(
-            note.createdAt
-          ).toLocaleString()}
+          {new Date(note.createdAt).toLocaleString()}
         </p>
       </div>
 
       {/* Delete Button */}
       <button
-        onClick={() =>
-          onDelete(note._id)
-        }
+        onClick={() => onDelete(note._id)}
         className="ml-6 mt-1 text-slate-400 transition hover:text-red-500"
       >
         <Trash2 size={26} />

@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: env.clientUrl,
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
@@ -27,8 +27,6 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
-
-
 app.get("/api/health", (_req, res) => {
   res.status(200).json({
     success: true,
@@ -36,12 +34,8 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
-
-
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
-
-
 
 app.use(errorMiddleware);
 

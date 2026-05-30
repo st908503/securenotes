@@ -31,7 +31,7 @@ const noteSchema = new Schema<INote>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Note = mongoose.model<INote>("Note", noteSchema);

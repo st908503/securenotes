@@ -1,7 +1,4 @@
-import {
-  render,
-  screen,
-} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import Dashboard from "../pages/Dashboard";
 
@@ -18,13 +15,9 @@ describe("Dashboard Page", () => {
         <BrowserRouter>
           <Dashboard />
         </BrowserRouter>
-      </Provider>
+      </Provider>,
     );
 
-    expect(
-      screen.getByText(
-        /secure notes/i
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByText(/secure notes/i)).toBeInTheDocument();
   });
 });

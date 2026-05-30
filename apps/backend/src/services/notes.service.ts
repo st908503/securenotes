@@ -26,14 +26,10 @@ export const createNote = async ({
   return note;
 };
 
-export const getUserNotes = async ({
-  userId,
-  search,
-}: GetNotesInput) => {
+export const getUserNotes = async ({ userId, search }: GetNotesInput) => {
   const query: any = {
     user: userId,
   };
-
 
   if (search) {
     query.title = {
@@ -49,10 +45,7 @@ export const getUserNotes = async ({
   return notes;
 };
 
-export const deleteNote = async (
-  noteId: string,
-  userId: string
-) => {
+export const deleteNote = async (noteId: string, userId: string) => {
   const note = await Note.findOne({
     _id: noteId,
     user: userId,

@@ -6,42 +6,28 @@ Users can securely register, login, and manage encrypted personal notes through 
 
 ---
 
-# Live Demo
-
-## Frontend
-
-Add your deployed frontend URL here.
-
-```txt
-https://your-frontend-url.vercel.app
-```
-
-## Backend
-
-Add your deployed backend URL here.
-
-```txt
-https://your-backend-url.onrender.com
-```
-
----
-
 # Features
 
 ## Authentication
 
 * User registration
 * User login
-* JWT authentication
+* Access & refresh token authentication
+* Automatic access token renewal
 * Protected routes
+* HTTP-only refresh token cookies
 * Secure password hashing using bcrypt
+
+---
 
 ## Notes Management
 
 * Create secure notes
 * Fetch notes
 * Delete notes
-* Search notes
+* Search/filter notes
+
+---
 
 ## Security
 
@@ -51,6 +37,8 @@ https://your-backend-url.onrender.com
 * Input validation
 * Secure middleware architecture
 
+---
+
 ## Frontend
 
 * Responsive UI
@@ -58,14 +46,28 @@ https://your-backend-url.onrender.com
 * Debounced search
 * Reusable component architecture
 * TailwindCSS UI
+* Axios interceptors
+* Toast notifications
+* Protected routes
+* Logout confirmation modal
+
+---
 
 ## Backend
 
 * RESTful APIs
 * MongoDB integration
 * Centralized error handling
+* Refresh token authentication
 * Scalable service architecture
 * TypeScript support
+
+---
+
+## Testing
+
+* Frontend testing using Vitest & React Testing Library
+* Backend testing using Jest & Supertest
 
 ---
 
@@ -73,13 +75,24 @@ https://your-backend-url.onrender.com
 
 This project uses TurboRepo for monorepo management.
 
-```txt
+```txt id="j18r1w"
 secure-notes-app/
 │
 ├── apps/
 │   ├── frontend/
 │   └── backend/
 │
+├── screenshots/
+│   ├── login.png
+│   ├── register.png
+│   ├── dashboard.png
+│   ├── create-note.png
+│   └── search-notes.png
+│
+├── postman/
+│   └── SecureNotes.postman_collection.json
+│
+├── docker-compose.yml
 ├── package.json
 ├── turbo.json
 └── README.md
@@ -98,6 +111,11 @@ secure-notes-app/
 * TailwindCSS
 * Axios
 * React Hook Form
+* CryptoJS
+* Vitest
+* React Testing Library
+
+---
 
 ## Backend
 
@@ -107,7 +125,11 @@ secure-notes-app/
 * MongoDB
 * Mongoose
 * JWT
-* bcrypt
+* bcryptjs
+* Jest
+* Supertest
+
+---
 
 ## Monorepo
 
@@ -118,10 +140,11 @@ secure-notes-app/
 
 # Project Structure
 
-```txt
+```txt id="ybmjq0"
 apps/
 ├── frontend/
 │   ├── src/
+│   ├── public/
 │   ├── package.json
 │   └── README.md
 │
@@ -139,20 +162,26 @@ apps/
 
 Create:
 
-```txt
+```txt id="f8pw2f"
 apps/backend/.env
 ```
 
 Example:
 
-```env
+```env id="bjvl59"
 PORT=8000
 
 MONGO_URI=your_mongodb_connection_string
 
-JWT_SECRET=your_jwt_secret_key
+JWT_SECRET=your_access_token_secret
 
-JWT_EXPIRES_IN=7d
+JWT_EXPIRES_IN=15m
+
+JWT_REFRESH_SECRET=your_refresh_token_secret
+
+JWT_REFRESH_EXPIRES_IN=7d
+
+CLIENT_URL=http://localhost:5173
 
 NODE_ENV=development
 ```
@@ -163,13 +192,13 @@ NODE_ENV=development
 
 Create:
 
-```txt
+```txt id="d6x3du"
 apps/frontend/.env
 ```
 
 Example:
 
-```env
+```env id="0f9v24"
 VITE_API_BASE_URL=http://localhost:8000/api
 
 VITE_AES_SECRET_KEY=your_aes_secret_key
@@ -181,7 +210,7 @@ VITE_AES_SECRET_KEY=your_aes_secret_key
 
 ## Clone Repository
 
-```bash
+```bash id="5b9kp9"
 git clone <your-repository-url>
 ```
 
@@ -191,7 +220,7 @@ git clone <your-repository-url>
 
 From root directory:
 
-```bash
+```bash id="qcdw8j"
 npm install
 ```
 
@@ -201,7 +230,7 @@ npm install
 
 From root directory:
 
-```bash
+```bash id="pnijwp"
 npm run dev
 ```
 
@@ -218,13 +247,15 @@ simultaneously.
 
 ## Frontend
 
-```txt
+```txt id="yxmjpb"
 http://localhost:5173
 ```
 
+---
+
 ## Backend
 
-```txt
+```txt id="3ps8yy"
 http://localhost:8000
 ```
 
@@ -232,7 +263,7 @@ http://localhost:8000
 
 # Build Project
 
-```bash
+```bash id="if2l4z"
 npm run build
 ```
 
@@ -240,9 +271,60 @@ npm run build
 
 # Start Production Build
 
-```bash
+```bash id="wxg2lo"
 npm run start
 ```
+
+---
+
+# Run Tests
+
+## Frontend Tests
+
+```bash id="vw8w4i"
+npm run test --workspace=frontend
+```
+
+---
+
+## Backend Tests
+
+```bash id="8z7mdh"
+npm run test --workspace=backend
+```
+
+---
+
+## Run All Tests
+
+```bash id="eqz4m4"
+npm test
+```
+
+---
+
+````md
+# Docker Support
+
+This project includes Docker Compose support for running MongoDB locally.
+
+Start MongoDB container:
+
+```bash
+docker compose up -d
+````
+
+If using local Docker MongoDB, update backend `.env`:
+
+```env
+MONGO_URI=mongodb://localhost:27017/secure-notes-db
+```
+
+The project currently uses MongoDB Atlas by default.
+
+```
+```
+
 
 ---
 
@@ -252,14 +334,26 @@ npm run start
 
 ### Register
 
-```http
+```http id="4b18e0"
 POST /api/auth/register
 ```
 
 ### Login
 
-```http
+```http id="wy99pr"
 POST /api/auth/login
+```
+
+### Refresh Access Token
+
+```http id="z5v3ki"
+POST /api/auth/refresh-token
+```
+
+### Logout
+
+```http id="lf5w0d"
+POST /api/auth/logout
 ```
 
 ---
@@ -268,36 +362,26 @@ POST /api/auth/login
 
 ### Get Notes
 
-```http
+```http id="3wyj1f"
 GET /api/notes
 ```
 
 ### Search Notes
 
-```http
+```http id="9jdlxq"
 GET /api/notes?search=value
 ```
 
 ### Create Note
 
-```http
+```http id="1kt40p"
 POST /api/notes
 ```
 
 ### Delete Note
 
-```http
+```http id="ys2kw0"
 DELETE /api/notes/:id
-```
-
----
-
-# Postman Collection
-
-The Postman collection is available inside:
-
-```txt
-/postman
 ```
 
 ---
@@ -306,18 +390,40 @@ The Postman collection is available inside:
 
 ## Login Page
 
-Add screenshot here.
+![Login](./screenshots/login.png)
 
-```txt
-screenshots/login.png
-```
+---
+
+## Register Page
+
+![Register](./screenshots/register.png)
+
+---
 
 ## Dashboard
 
-Add screenshot here.
+![Dashboard](./screenshots/dashboard.png)
 
-```txt
-screenshots/dashboard.png
+---
+
+## Create Note
+
+![Create Note](./screenshots/create-note.png)
+
+---
+
+## Search Notes
+
+![Search Notes](./screenshots/search-notes.png)
+
+---
+
+# Postman Collection
+
+The Postman collection is available inside:
+
+```txt id="7sdu7v"
+/postman/SecureNotes.postman_collection.json
 ```
 
 ---
@@ -330,6 +436,8 @@ For production-grade applications:
 
 * encryption keys should not live in frontend bundles
 * secure key management services should be used
+* refresh tokens should be rotated and invalidated properly
+* HTTPS should always be enabled in production
 
 This implementation is intended for assessment/demo purposes.
 
@@ -337,14 +445,14 @@ This implementation is intended for assessment/demo purposes.
 
 # Future Improvements
 
-* Refresh token authentication
 * Edit notes functionality
 * Pagination
-* Docker support
 * Swagger documentation
-* Unit testing
 * Dark mode
 * Rich text editor
+* Email verification
+* Password reset flow
+* Role-based authorization
 
 ---
 
@@ -352,8 +460,9 @@ This implementation is intended for assessment/demo purposes.
 
 Detailed documentation is available inside:
 
-```txt
+```txt id="rx6h7t"
 apps/frontend/README.md
+
 apps/backend/README.md
 ```
 

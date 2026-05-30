@@ -4,25 +4,17 @@ import Button from "../common/Button";
 import { encryptNote } from "../../utils/encryption";
 
 interface NoteFormProps {
-  onSubmit: (
-    title: string,
-    encryptedContent: string
-  ) => void;
+  onSubmit: (title: string, encryptedContent: string) => void;
 
   loading?: boolean;
 }
 
-const NoteForm = ({
-  onSubmit,
-  loading = false,
-}: NoteFormProps) => {
+const NoteForm = ({ onSubmit, loading = false }: NoteFormProps) => {
   const [title, setTitle] = useState("");
 
   const [content, setContent] = useState("");
 
-  const handleSubmit = (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim() || !content.trim()) {
@@ -35,8 +27,7 @@ const NoteForm = ({
     |--------------------------------------------------------------------------
     */
 
-    const encryptedContent =
-      encryptNote(content);
+    const encryptedContent = encryptNote(content);
 
     onSubmit(title, encryptedContent);
 
@@ -58,9 +49,7 @@ const NoteForm = ({
           type="text"
           placeholder="Enter note title"
           value={title}
-          onChange={(e) =>
-            setTitle(e.target.value)
-          }
+          onChange={(e) => setTitle(e.target.value)}
           className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-blue-200"
         />
       </div>
@@ -74,17 +63,12 @@ const NoteForm = ({
           rows={5}
           placeholder="Write your secure note..."
           value={content}
-          onChange={(e) =>
-            setContent(e.target.value)
-          }
+          onChange={(e) => setContent(e.target.value)}
           className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-blue-200"
         />
       </div>
 
-      <Button
-        type="submit"
-        loading={loading}
-      >
+      <Button type="submit" loading={loading}>
         Add Secure Note
       </Button>
     </form>

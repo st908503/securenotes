@@ -2,28 +2,31 @@
 
 A modern frontend application for Secure Notes built with React, TypeScript, Redux Toolkit, TailwindCSS, and Vite.
 
-This application allows users to securely authenticate and manage encrypted personal notes.
+This application allows users to securely authenticate and manage encrypted personal notes with access & refresh token authentication.
 
 ---
 
-## Features
+# Features
 
-* JWT authentication flow
+* Access & refresh token authentication
+* Automatic access token renewal
+* Protected routes
 * Responsive UI
 * Redux Toolkit state management
 * AES client-side note encryption
 * Create notes
-* Search notes
+* Search/filter notes
 * Delete notes
-* Protected routes
 * Debounced search
 * Reusable component architecture
 * Axios API integration
 * Toast notifications
+* Logout confirmation modal
+* Secure authentication flow
 
 ---
 
-## Tech Stack
+# Tech Stack
 
 * React
 * TypeScript
@@ -35,126 +38,190 @@ This application allows users to securely authenticate and manage encrypted pers
 * React Hook Form
 * CryptoJS
 * React Hot Toast
+* Vitest
+* React Testing Library
 
 ---
 
-## Folder Structure
+# Folder Structure
 
 ```bash
-frontend/
+apps/frontend/
 │
 ├── src/
 │   ├── app/
+│   │   └── store.ts
+│   │
 │   ├── components/
+│   │   ├── common/
+│   │   │   ├── Button.tsx
+│   │   │   ├── ConfirmModal.tsx
+│   │   │   ├── Input.tsx
+│   │   │   └── Loader.tsx
+│   │   │
+│   │   ├── layout/
+│   │   │   └── Navbar.tsx
+│   │   │
+│   │   └── notes/
+│   │       ├── NoteCard.tsx
+│   │       └── NoteForm.tsx
+│   │
 │   ├── features/
+│   │   ├── auth/
+│   │   │   ├── authService.ts
+│   │   │   ├── authSlice.ts
+│   │   │   └── types.ts
+│   │   │
+│   │   └── notes/
+│   │       ├── notesService.ts
+│   │       ├── notesSlice.ts
+│   │       └── types.ts
+│   │
 │   ├── hooks/
+│   │   └── useAuth.ts
+│   │
 │   ├── pages/
+│   │   ├── Dashboard.tsx
+│   │   ├── Login.tsx
+│   │   └── Register.tsx
+│   │
 │   ├── routes/
+│   │   └── AppRoutes.tsx
+│   │
+│   ├── tests/
+│   │   ├── Dashboard.test.tsx
+│   │   ├── Login.test.tsx
+│   │   └── setup.ts
+│   │
 │   ├── types/
+│   │   └── index.ts
+│   │
 │   ├── utils/
+│   │   ├── api.ts
+│   │   └── encryption.ts
+│   │
 │   ├── App.tsx
+│   ├── index.css
 │   └── main.tsx
 │
 ├── public/
 ├── .env.example
 ├── package.json
 ├── vite.config.ts
+├── tsconfig.json
 └── README.md
 ```
 
+
 ---
 
-## Environment Variables
+# Environment Variables
 
 Create a `.env` file in the frontend root directory.
 
-```env
+```env id="um6azg"
 VITE_API_BASE_URL=http://localhost:8000/api
 
-VITE_AES_SECRET_KEY=my-super-secret-key
+VITE_AES_SECRET_KEY=your_aes_secret_key
 ```
 
 ---
 
-## Installation
+# Installation
 
-### Clone Repository
+## Clone Repository
 
-```bash
+```bash id="35a3z0"
 git clone <repository-url>
 ```
 
-### Navigate to Frontend
+---
 
-```bash
-cd frontend
-```
+# Install Dependencies
 
-### Install Dependencies
+From project root:
 
-```bash
+```bash id="c7u8t0"
 npm install
 ```
 
 ---
 
-## Run Development Server
+# Run Development Server
 
-```bash
-npm run dev
+Run only frontend:
+
+```bash id="ndc0bn"
+npm run dev --workspace=frontend
 ```
 
 Frontend will run on:
 
-```bash
+```bash id="g9q6sm"
 http://localhost:5173
 ```
 
 ---
 
-## Build Project
+# Build Project
 
-```bash
-npm run build
+```bash id="0um0ud"
+npm run build --workspace=frontend
 ```
 
 ---
 
-## Preview Production Build
+# Preview Production Build
 
-```bash
-npm run preview
+```bash id="7icgu3"
+npm run start --workspace=frontend
+```
+
+---
+
+# Run Frontend Tests
+
+```bash id="1tlq27"
+npm run test --workspace=frontend
 ```
 
 ---
 
 # Application Pages
 
----
+# Authentication
 
-## Authentication
+## Login Page
 
-### Login Page
+Features:
 
 * User login
 * Form validation
-* JWT token handling
+* Access token authentication
+* Automatic token refresh
+* Protected navigation
 
-### Register Page
+---
+
+## Register Page
+
+Features:
 
 * User registration
 * Password validation
 * Secure authentication flow
+* Redirect to login after registration
 
 ---
 
-## Dashboard
+# Dashboard
 
-### Features
+Features:
 
 * Create encrypted notes
-* Search notes
+* Search/filter notes
 * Delete notes
+* Logout confirmation modal
 * Responsive note cards
 * Protected dashboard route
 
@@ -166,9 +233,23 @@ Notes are encrypted on the client side using AES encryption before being sent to
 
 Encryption is implemented using:
 
-```bash
+```bash id="gtjjms"
 crypto-js
 ```
+
+---
+
+# Authentication Flow
+
+Authentication is implemented using:
+
+* Short-lived access tokens
+* HTTP-only refresh token cookies
+* Automatic token renewal using Axios interceptors
+
+Access tokens are stored in localStorage.
+
+Refresh tokens are stored securely in HTTP-only cookies.
 
 ---
 
@@ -194,6 +275,31 @@ The UI is built using:
 
 ---
 
+# Testing
+
+Frontend testing includes:
+
+* Login page rendering tests
+* Dashboard rendering tests
+* React Testing Library
+* Vitest configuration
+
+---
+
+# Security Notes
+
+This project encrypts note content on the client side using AES encryption before storing it in the database.
+
+For production-grade applications:
+
+* encryption keys should not live in frontend bundles
+* secure key management services should be used
+* HTTPS should always be enabled in production
+
+This implementation is intended for assessment/demo purposes.
+
+---
+
 # Future Improvements
 
 * Dark mode
@@ -202,8 +308,8 @@ The UI is built using:
 * Pagination
 * Infinite scroll
 * PWA support
-* Unit testing
 * Docker deployment
+* Offline support
 
 ---
 
