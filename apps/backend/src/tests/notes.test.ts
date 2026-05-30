@@ -25,7 +25,7 @@ describe("Notes API", () => {
         });
 
     token =
-      loginResponse.body.data.token;
+      loginResponse.body.data.accessToken;
   });
 
   it("should create a note", async () => {

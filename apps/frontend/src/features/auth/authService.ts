@@ -3,28 +3,52 @@ import { api } from "../../utils/api";
 import type {
   AuthResponse,
   LoginPayload,
+  RefreshTokenResponse,
   RegisterPayload,
 } from "./types";
 
-export const registerUser = async (
-  payload: RegisterPayload
-): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>(
-    "/auth/register",
-    payload
-  );
+export const registerUser =
+  async (
+    payload: RegisterPayload
+  ): Promise<AuthResponse> => {
+    const response =
+      await api.post<AuthResponse>(
+        "/auth/register",
+        payload
+      );
 
-  return response.data;
-};
+    return response.data;
+  };
 
+export const loginUser =
+  async (
+    payload: LoginPayload
+  ): Promise<AuthResponse> => {
+    const response =
+      await api.post<AuthResponse>(
+        "/auth/login",
+        payload
+      );
 
-export const loginUser = async (
-  payload: LoginPayload
-): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>(
-    "/auth/login",
-    payload
-  );
+    return response.data;
+  };
 
-  return response.data;
-};
+export const refreshToken =
+  async (): Promise<RefreshTokenResponse> => {
+    const response =
+      await api.post<RefreshTokenResponse>(
+        "/auth/refresh-token"
+      );
+
+    return response.data;
+  };
+
+export const logoutUser =
+  async () => {
+    const response =
+      await api.post(
+        "/auth/logout"
+      );
+
+    return response.data;
+  };

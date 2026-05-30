@@ -1,5 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import { verifyToken } from "../utils/jwt";
+import {
+  NextFunction,
+  Request,
+  Response,
+} from "express";
+
+import {
+  verifyAccessToken,
+} from "../utils/jwt";
 
 export const protect = (
   req: Request,
@@ -7,20 +14,30 @@ export const protect = (
   next: NextFunction
 ): void => {
   try {
-    const authHeader = req.headers.authorization;
+    const authHeader =
+      req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (
+      !authHeader ||
+      !authHeader.startsWith(
+        "Bearer "
+      )
+    ) {
       res.status(401).json({
         success: false,
-        message: "Unauthorized access",
+
+        message:
+          "Unauthorized access",
       });
 
       return;
     }
 
-    const token = authHeader.split(" ")[1];
+    const token =
+      authHeader.split(" ")[1];
 
-    const decoded = verifyToken(token);
+    const decoded =
+      verifyAccessToken(token);
 
     req.user = decoded;
 
@@ -28,7 +45,9 @@ export const protect = (
   } catch (error) {
     res.status(401).json({
       success: false,
-      message: "Invalid or expired token",
+
+      message:
+        "Invalid or expired token",
     });
   }
 };
