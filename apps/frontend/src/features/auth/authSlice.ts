@@ -43,11 +43,7 @@ export const register =
             payload
           );
 
-        localStorage.setItem(
-          "accessToken",
-          response.data
-            .accessToken
-        );
+     
 
         return response.data;
       } catch (error: any) {
@@ -152,9 +148,7 @@ const authSlice = createSlice({
         state.user =
           action.payload.user;
 
-        state.token =
-          action.payload
-            .accessToken;
+      
       }
     );
 

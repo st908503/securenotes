@@ -21,15 +21,13 @@ describe("Auth API", () => {
     );
 
     expect(
-      response.body.data
-        .accessToken
+      response.body.data.user
     ).toBeDefined();
 
     expect(
-      response.headers[
-        "set-cookie"
-      ]
-    ).toBeDefined();
+      response.body.data
+        .accessToken
+    ).toBeUndefined();
   });
 
   it("should login a user", async () => {
@@ -98,9 +96,9 @@ describe("Auth API", () => {
       200
     );
 
-    expect(response.body.success).toBe(
-      true
-    );
+    expect(
+      response.body.success
+    ).toBe(true);
   });
 
   it("should fail with invalid credentials", async () => {

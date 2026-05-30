@@ -52,18 +52,6 @@ export const registerUser = async ({
     password: hashedPassword,
   });
 
-  const accessToken =
-    generateAccessToken({
-      userId:
-        user._id.toString(),
-    });
-
-  const refreshToken =
-    generateRefreshToken({
-      userId:
-        user._id.toString(),
-    });
-
   return {
     user: {
       id: user._id,
@@ -72,10 +60,6 @@ export const registerUser = async ({
 
       email: user.email,
     },
-
-    accessToken,
-
-    refreshToken,
   };
 };
 

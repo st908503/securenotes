@@ -42,9 +42,11 @@ const Register = () => {
     if (
       registerUser.fulfilled.match(resultAction)
     ) {
-      toast.success("Registration successful");
+     toast.success(
+  "Registration successful. Please login."
+);
 
-      navigate("/");
+navigate("/login");
     }
   };
 
@@ -56,7 +58,7 @@ const Register = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/");
+  navigate("/login");
     }
   }, [token, navigate]);
 

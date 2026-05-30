@@ -8,7 +8,7 @@ export interface AuthResponse {
   data: {
     user: User;
 
-    accessToken: string;
+    accessToken?: string;
   };
 }
 
@@ -16,7 +16,7 @@ export interface RefreshTokenResponse {
   success: boolean;
 
   data: {
-    accessToken: string;
+    accessToken?: string;
   };
 }
 

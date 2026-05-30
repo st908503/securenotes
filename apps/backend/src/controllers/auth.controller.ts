@@ -23,28 +23,6 @@ export const register =
           req.body
         );
 
-      res.cookie(
-        "refreshToken",
-        result.refreshToken,
-        {
-          httpOnly: true,
-
-          secure:
-            process.env
-              .NODE_ENV ===
-            "production",
-
-         sameSite: "lax",
-
-          maxAge:
-            7 *
-            24 *
-            60 *
-            60 *
-            1000,
-        }
-      );
-
       res.status(201).json({
         success: true,
 
@@ -53,9 +31,6 @@ export const register =
 
         data: {
           user: result.user,
-
-          accessToken:
-            result.accessToken,
         },
       });
     }
@@ -83,7 +58,7 @@ export const login =
               .NODE_ENV ===
             "production",
 
-        sameSite: "lax",
+          sameSite: "lax",
 
           maxAge:
             7 *
@@ -142,13 +117,13 @@ export const refreshAccessToken =
             decoded.userId,
         });
 
-    res.status(200).json({
-  success: true,
+      res.status(200).json({
+        success: true,
 
-  data: {
-    accessToken,
-  },
-});
+        data: {
+          accessToken,
+        },
+      });
     }
   );
 
