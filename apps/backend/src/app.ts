@@ -1,3 +1,5 @@
+
+
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -12,6 +14,7 @@ const app = express();
 
 app.use(helmet());
 
+
 const allowedOrigins = [
   "http://localhost:5173",
   "https://securenotes-frontend-snowy.vercel.app"
@@ -24,6 +27,7 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+
 
 
 app.use(express.json());
