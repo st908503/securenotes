@@ -32,7 +32,16 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+   const isAuthRoute =
+  originalRequest.url?.includes("/auth/login") ||
+  originalRequest.url?.includes("/auth/register") ||
+  originalRequest.url?.includes("/auth/refresh-token");
+
+if (
+  error.response?.status === 401 &&
+  !originalRequest._retry &&
+  !isAuthRoute
+) {
       originalRequest._retry = true;
 
       try {
@@ -44,14 +53,16 @@ api.interceptors.response.use(
           },
         );
 
-        const newAccessToken = response.data.data.accessToken;
+      const newAccessToken = response.data.data.accessToken;
 
-      if (response.data.accessToken) {
+if (newAccessToken) {
   localStorage.setItem(
     "accessToken",
-    response.data.accessToken
+    newAccessToken
   );
 }
+
+      
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
@@ -59,7 +70,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         localStorage.removeItem("accessToken");
 
-        window.location.href = "/login";
+       localStorage.removeItem("accessToken");
 
         return Promise.reject(refreshError);
       }
