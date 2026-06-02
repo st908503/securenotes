@@ -41,8 +41,12 @@ export const login = createAsyncThunk(
   async (payload: LoginPayload, thunkAPI) => {
     try {
       const response = await loginUser(payload);
-
-      localStorage.setItem("accessToken", response.data.accessToken);
+if (response.data.accessToken) {
+  localStorage.setItem(
+    "accessToken",
+    response.data.accessToken
+  );
+}
 
       return response.data;
     } catch (error: any) {
@@ -60,7 +64,12 @@ export const refreshAccessToken = createAsyncThunk(
     try {
       const response = await refreshToken();
 
-      localStorage.setItem("accessToken", response.data.accessToken);
+      if (response.data.accessToken) {
+  localStorage.setItem(
+    "accessToken",
+    response.data.accessToken
+  );
+}
 
       return response.data.accessToken;
     } catch (error: any) {
@@ -116,7 +125,7 @@ const authSlice = createSlice({
 
       state.user = action.payload.user;
 
-      state.token = action.payload.accessToken;
+ state.token = action.payload.accessToken ?? null;
     });
 
     builder.addCase(login.rejected, (state, action) => {
@@ -126,7 +135,7 @@ const authSlice = createSlice({
     });
 
     builder.addCase(refreshAccessToken.fulfilled, (state, action) => {
-      state.token = action.payload;
+state.token = action.payload ?? null;
     });
 
     builder.addCase(logout.fulfilled, (state) => {
