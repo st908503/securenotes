@@ -1,27 +1,20 @@
 import mongoose from "mongoose";
+import { env } from "./env";
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = env.mongoUri;
 
 if (!MONGO_URI) {
   throw new Error("MONGO_URI is missing");
 }
 
-type MongooseCache = {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
-};
+let cached = (global as any).mongoose;
 
-declare global {
-  // eslint-disable-next-line no-var
-  var mongooseCache: MongooseCache | undefined;
+if (!cached) {
+  cached = (global as any).mongoose = {
+    conn: null,
+    promise: null,
+  };
 }
-
-const cached: MongooseCache = global.mongooseCache || {
-  conn: null,
-  promise: null,
-};
-
-global.mongooseCache = cached;
 
 export const connectDB = async () => {
   if (cached.conn) return cached.conn;
