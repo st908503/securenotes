@@ -1,14 +1,33 @@
 import mongoose from "mongoose";
 import { env } from "./env";
 
-export const connectDB = async (): Promise<void> => {
-  try {
-    const conn = await mongoose.connect(env.mongoUri);
+const MONGO_URI = env.mongoUri;
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error("MongoDB connection failed:", error);
+if (!MONGO_URI) {
+  throw new Error("MONGO_URI is missing");
+}
 
-    process.exit(1);
+// FIX: cache connection across Vercel invocations
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = {
+    conn: null,
+    promise: null,
+  };
+}
+
+export const connectDB = async () => {
+  if (cached.conn) {
+    return cached.conn;
   }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGO_URI).then((mongoose) => {
+      return mongoose;
+    });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
