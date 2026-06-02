@@ -13,7 +13,8 @@ const app = express();
 app.use(helmet());
 
 const allowedOrigins = [
-  "https://securenotes-frontend-snowy.vercel.app",
+  "http://localhost:5173",
+  "https://securenotes-frontend-git-main-caspersky700-6323s-projects.vercel.app"
 ];
 
 app.use(
