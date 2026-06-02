@@ -14,7 +14,7 @@ app.use(helmet());
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://securenotes-frontend-git-main-caspersky700-6323s-projects.vercel.app"
+  "https://securenotes-frontend-snowy.vercel.app"
 ];
 
 app.use(
