@@ -8,9 +8,9 @@ import {
 
 import { asyncHandler } from "../utils/asyncHandler";
 
+// ADD NOTE
 export const addNote = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.userId as string;
-
   const { title, content } = req.body;
 
   const note = await createNote({
@@ -26,9 +26,9 @@ export const addNote = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// FETCH NOTES
 export const fetchNotes = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.userId as string;
-
   const search = req.query.search as string;
 
   const notes = await getUserNotes({
@@ -42,9 +42,9 @@ export const fetchNotes = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// DELETE NOTE
 export const removeNote = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.userId as string;
-
   const noteId = req.params.id as string;
 
   await deleteNote(noteId, userId);

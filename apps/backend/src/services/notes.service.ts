@@ -1,5 +1,6 @@
 import { Note } from "../models/note.model";
 import { ApiError } from "../lib/ApiError";
+import { connectDB } from "../config/db";
 
 interface CreateNoteInput {
   userId: string;
@@ -12,11 +13,14 @@ interface GetNotesInput {
   search?: string;
 }
 
+// CREATE NOTE
 export const createNote = async ({
   userId,
   title,
   content,
 }: CreateNoteInput) => {
+  await connectDB(); // 🔥 REQUIRED FOR VERCEL
+
   const note = await Note.create({
     user: userId,
     title,
@@ -26,7 +30,10 @@ export const createNote = async ({
   return note;
 };
 
+// GET NOTES
 export const getUserNotes = async ({ userId, search }: GetNotesInput) => {
+  await connectDB(); // 🔥 REQUIRED
+
   const query: any = {
     user: userId,
   };
@@ -45,7 +52,10 @@ export const getUserNotes = async ({ userId, search }: GetNotesInput) => {
   return notes;
 };
 
+// DELETE NOTE
 export const deleteNote = async (noteId: string, userId: string) => {
+  await connectDB(); // 🔥 REQUIRED
+
   const note = await Note.findOne({
     _id: noteId,
     user: userId,

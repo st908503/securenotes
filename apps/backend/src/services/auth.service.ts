@@ -2,32 +2,35 @@ import { User } from "../models/user.model";
 
 import { comparePassword, hashPassword } from "../utils/bcrypt";
 
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/jwt";
 
 import { ApiError } from "../lib/ApiError";
 
+import { connectDB } from "../config/db";
+
 interface RegisterInput {
   name: string;
-
   email: string;
-
   password: string;
 }
 
 interface LoginInput {
   email: string;
-
   password: string;
 }
 
+// REGISTER
 export const registerUser = async ({
   name,
   email,
   password,
 }: RegisterInput) => {
-  const existingUser = await User.findOne({
-    email,
-  });
+  await connectDB(); // 🔥 REQUIRED
+
+  const existingUser = await User.findOne({ email });
 
   if (existingUser) {
     throw new ApiError(409, "User already exists");
@@ -44,24 +47,26 @@ export const registerUser = async ({
   return {
     user: {
       id: user._id,
-
       name: user.name,
-
       email: user.email,
     },
   };
 };
 
+// LOGIN
 export const loginUser = async ({ email, password }: LoginInput) => {
-  const user = await User.findOne({
-    email,
-  }).select("+password");
+  await connectDB(); // 🔥 REQUIRED
+
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
     throw new ApiError(401, "Invalid credentials");
   }
 
-  const isPasswordMatched = await comparePassword(password, user.password);
+  const isPasswordMatched = await comparePassword(
+    password,
+    user.password
+  );
 
   if (!isPasswordMatched) {
     throw new ApiError(401, "Invalid credentials");
@@ -78,14 +83,10 @@ export const loginUser = async ({ email, password }: LoginInput) => {
   return {
     user: {
       id: user._id,
-
       name: user.name,
-
       email: user.email,
     },
-
     accessToken,
-
     refreshToken,
   };
 };

@@ -12,21 +12,29 @@ import { validateRequest } from "../middlewares/validate.middleware";
 
 const router = express.Router();
 
+// GET ALL NOTES
 router.get("/", protect, fetchNotes);
 
+// CREATE NOTE
 router.post(
   "/",
   protect,
   [
-    body("title").trim().notEmpty().withMessage("Title is required"),
+    body("title")
+      .trim()
+      .notEmpty()
+      .withMessage("Title is required"),
 
-    body("content").notEmpty().withMessage("Content is required"),
+    body("content")
+      .notEmpty()
+      .withMessage("Content is required"),
 
     validateRequest,
   ],
-  addNote,
+  addNote
 );
 
+// DELETE NOTE
 router.delete("/:id", protect, removeNote);
 
 export default router;

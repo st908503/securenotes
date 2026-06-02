@@ -1,5 +1,4 @@
 import express from "express";
-
 import { body } from "express-validator";
 
 import {
@@ -13,12 +12,19 @@ import { validateRequest } from "../middlewares/validate.middleware";
 
 const router = express.Router();
 
+// REGISTER
 router.post(
   "/register",
   [
-    body("name").trim().notEmpty().withMessage("Name is required"),
+    body("name")
+      .trim()
+      .notEmpty()
+      .withMessage("Name is required"),
 
-    body("email").isEmail().withMessage("Valid email is required"),
+    body("email")
+      .isEmail()
+      .withMessage("Valid email is required")
+      .normalizeEmail(),
 
     body("password")
       .isLength({ min: 6 })
@@ -26,25 +32,31 @@ router.post(
 
     validateRequest,
   ],
-
-  register,
+  register
 );
 
+// LOGIN
 router.post(
   "/login",
   [
-    body("email").isEmail().withMessage("Valid email is required"),
+    body("email")
+      .isEmail()
+      .withMessage("Valid email is required")
+      .normalizeEmail(),
 
-    body("password").notEmpty().withMessage("Password is required"),
+    body("password")
+      .notEmpty()
+      .withMessage("Password is required"),
 
     validateRequest,
   ],
-
-  login,
+  login
 );
 
+// REFRESH TOKEN
 router.post("/refresh-token", refreshAccessToken);
 
+// LOGOUT
 router.post("/logout", logout);
 
 export default router;
