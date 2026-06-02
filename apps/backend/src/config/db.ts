@@ -6,13 +6,11 @@ if (!MONGO_URI) {
   throw new Error("MONGO_URI is missing");
 }
 
-// FIX: define cache type separately
 type MongooseCache = {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 };
 
-// extend global safely
 declare global {
   // eslint-disable-next-line no-var
   var mongooseCache: MongooseCache | undefined;

@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
 import notesRoutes from "./routes/notes.routes";
 import { errorMiddleware } from "./middlewares/error.middleware";
-import { env } from "./config/env";
 
 const app = express();
 
@@ -25,13 +24,9 @@ app.use(
   })
 );
 
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
-
 app.use(morgan("dev"));
 
 app.get("/api/health", (_req, res) => {
