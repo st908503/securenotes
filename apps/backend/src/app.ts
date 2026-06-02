@@ -12,12 +12,19 @@ const app = express();
 
 app.use(helmet());
 
+const allowedOrigins = [
+  "https://securenotes-frontend-snowy.vercel.app",
+];
+
 app.use(
   cors({
-    origin: env.clientUrl,
+    origin: allowedOrigins,
     credentials: true,
-  }),
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  })
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 
