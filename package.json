@@ -2,6 +2,9 @@
   "name": "secure-notes-app",
   "private": true,
   "packageManager": "npm@11.8.0",
+  "engines": {
+    "node": "22.x"
+  },
   "workspaces": [
     "apps/*"
   ],
