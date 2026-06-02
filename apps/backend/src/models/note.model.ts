@@ -31,7 +31,9 @@ const noteSchema = new Schema<INote>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export const Note = mongoose.model<INote>("Note", noteSchema);
+// ✅ SERVERLESS SAFE FIX
+export const Note =
+  mongoose.models.Note || mongoose.model<INote>("Note", noteSchema);

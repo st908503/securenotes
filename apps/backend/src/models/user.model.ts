@@ -36,7 +36,9 @@ const userSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export const User = mongoose.model<IUser>("User", userSchema);
+// ✅ IMPORTANT FIX (serverless-safe model reuse)
+export const User =
+  mongoose.models.User || mongoose.model<IUser>("User", userSchema);
